@@ -22,7 +22,6 @@ interface CurrentSettingsProps {
 }
 
 function CurrentSettings({ prompt, platform }: CurrentSettingsProps) {
-  console.log(platform);
   return (
     <div className="rounded-lg">
       <Card className="w-[350px] mx-4 my-4  border-blue-950  border-2">

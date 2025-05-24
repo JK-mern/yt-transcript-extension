@@ -2,9 +2,20 @@
   "manifest_version": 3,
   "name": "Youtube Transcript",
   "version": "1.0.0",
-  "permissions" : [
-    "storage"
+  "permissions": ["storage", "activeTab", "sidePanel"],
+  "action": { "default_popup": "index.html" },
+  "content_scripts": [
+    {
+      "js": ["src/content.tsx"],
+      "matches": ["https://www.youtube.com/watch*"]
+      
+    }
   ],
-  "action": { "default_popup": "index.html" }
-  
+  "background": {
+  "service_worker": "src/background.ts",
+  "type": "module"
+},
+"side_panel": {
+    "default_path": "src/sidepanel.html"
+  }
 }
