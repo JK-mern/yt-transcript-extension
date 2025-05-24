@@ -1,58 +1,48 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./components/ui/card"
-import { Input } from "./components/ui/input"
-import { Label } from "./components/ui/label"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from './components/ui/select'
-import { Button } from "./components/ui/button"
-import { useState } from "react"
-
+import { useEffect, useState } from "react";
+import DefaultSettingsPopUp from "./components/DefaultPopUp/DefaultPopUp";
+import CurrentSettings from "./components/CurrentSettingsPopUp/CurrentSettings";
 
 function App() {
-const [prompt, setPrompt] = useState<string>('')
-const [platform, setPlatform] = useState<string>('')
+  const [prompt, setPrompt] = useState<string>("");
+  const [platform, setPlatform] = useState<string>("");
+  const [showDefaultPopUp, setDefaultPopUP] = useState<boolean>(false);
 
+  useEffect(() => {
+    async function getDefault() {
+      const { prompt: storedPrompt } = await chrome.storage.local.get([
+        "prompt",
+      ]);
+      const { platform: storedPlatform } = await chrome.storage.local.get([
+        "platform",
+      ]);
+      if (storedPrompt && storedPlatform) {
+        setPlatform(storedPlatform);
+        setPrompt(storedPrompt);
+      } else {
+        setDefaultPopUP(true);
+      }
+    }
+    getDefault();
+  }, []);
 
-const handleSave = async() =>{
-    await chrome.storage.local.set({'prompt' : prompt})
-    await chrome.storage.local.set({'platform' : platform})
-    console.log("saved default prompt and platform", prompt,platform)
-}
+  const handleSave = async () => {
+    await chrome.storage.local.set({ prompt: prompt });
+    await chrome.storage.local.set({ platform: platform });
+    setDefaultPopUP(false)
+  };
   return (
-    <div className="rounded-lg">
-        <Card className="w-[350px] mx-4 my-4 ">
-      <CardHeader>
-        <CardTitle>Select Your Preferance</CardTitle>
-        <CardDescription>Get youtube transcript in one click.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Default Prompt</Label>
-              <Input id="prompt" placeholder="type your prompt"  onChange={(e) => {setPrompt(e.target.value)}} />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="model">Choose Model</Label>
-              <Select onValueChange={(value) => { setPlatform(value) }}>
-                <SelectTrigger id="model">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="chatGpt">chat Gpt</SelectItem>
-                  <SelectItem value="Gemini">Gemini</SelectItem>
-                  <SelectItem value="Claude">Claude</SelectItem>
-                  <SelectItem value="Perplexity">Perplexity</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-end">
-        <Button onClick={handleSave}>Save Preferance</Button>
-      </CardFooter>
-    </Card>
+    <div>
+      {showDefaultPopUp ? (
+        <DefaultSettingsPopUp
+          handleSave={handleSave}
+          setPlatform={setPlatform}
+          setPropmt={setPrompt}
+        />
+      ) : (
+        <CurrentSettings prompt={prompt} platform={platform} />
+      )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
