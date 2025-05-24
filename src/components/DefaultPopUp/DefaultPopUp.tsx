@@ -14,7 +14,7 @@ handleSave : () => void
 function DefaultSettingsPopUp( {setPropmt, setPlatform, handleSave} : DefaulPropUpProps) {
   return (
     <div className="rounded-lg">
-        <Card className="w-[350px] mx-4 my-4 ">
+        <Card className="w-[300px] mx-4 my-4 ">
       <CardHeader>
         <CardTitle>Select Your Preferance</CardTitle>
         <CardDescription>Get youtube transcript in one click.</CardDescription>

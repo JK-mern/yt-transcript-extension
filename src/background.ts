@@ -1,6 +1,30 @@
-import {GoogleGenAI} from '@google/genai';
-import {geminiApikey,prompt} from "./constant/constant"
+import { GoogleGenAI } from "@google/genai";
+import { geminiApikey, prompt } from "./constant/constant";
 
+// chrome.sidePanel
+//   .setPanelBehavior({ openPanelOnActionClick: true })
+//   .catch((error) => console.error("Error setting panel behavior:", error));
+
+
+chrome.action.onClicked.addListener(async (tab) => {
+  const { prompt, platform } = await chrome.storage.local.get(["prompt", "platform"]);
+
+  if (prompt && platform) {
+    await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+    await chrome.sidePanel.setOptions({
+      path: "src/sidepanel.html",
+      enabled: true,
+      tabId: tab.id,
+    });
+  } else {
+    chrome.windows.create({
+      url: chrome.runtime.getURL("index.html"),
+      type: "popup",
+      width: 400,
+      height: 600,
+    });
+  }
+});
 
 
 //@ts-ignore
@@ -10,7 +34,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       .then((result) => sendResponse(result))
       .catch((error) => sendResponse({ error: error.message }));
 
-    return true; 
+    return true;
   }
 });
 
@@ -37,8 +61,6 @@ async function handleTranscriptRequest(url: string) {
   return summarizedData;
 }
 
-
-
 async function getSummarizedData(transcript: string) {
   const ai = new GoogleGenAI({ apiKey: geminiApikey });
 
@@ -48,5 +70,5 @@ async function getSummarizedData(transcript: string) {
   });
 
   const rawText = await response.text;
-  return (rawText ?? "").replace(/\s*\n\s*/g, " ").trim();  
+  return (rawText ?? "").replace(/\s*\n\s*/g, " ").trim();
 }
