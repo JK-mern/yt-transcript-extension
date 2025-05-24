@@ -18,6 +18,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     return true;
   }
+
+     if (message.type === "openSidePanel") {
+    if (sender.tab?.id !== undefined) {
+      chrome.sidePanel
+        .open({ tabId: sender.tab.id })
+        .catch((error) => console.error("Failed to open side panel:", error));
+    }
+  }
+
 });
 
 async function handleTranscriptRequest(url: string) {
