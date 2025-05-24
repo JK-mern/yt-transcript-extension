@@ -1,0 +1,35 @@
+
+🛠️ Task: YouTube Transcript Summarizer Launcher (Chrome Extension)
+
+
+Objective:
+Build a Chrome extension that enhances the YouTube experience by showing video transcripts and allowing users to summarize content via their preferred AI platform.
+🔧 Key Requirements:
+Transcript Sideba
+Extract and display the YouTube video transcript in a sidebar on the same page.
+Summarize Button
+Insert a “Summarize” button near the YouTube video player.
+On the first use:
+Allow the user to select one of the following AI platforms:
+ChatGPT (chat.openai.com)
+Gemini (gemini.google.com)
+Claude (claude.ai)
+Let the user define a custom summary prompt (e.g., “Summarize this YouTube video: [transcript]”).
+Store the user’s preferences using chrome.storage.local.
+On future clicks:
+Automatically open the selected platform in a new tab with the transcript and prompt pre-filled.
+Include an option to update the chosen AI platform or prompt.
+Settings Panel
+Provide an easy way for users to change their selected AI tool and custom prompt later.
+✅ Bonus Points (Optional):
+“Copy Transcript” feature
+Error handling if transcript is unavailable
+Clean, user-friendly interface
+
+⏱️ Timeline:
+We expect this task to be completed and submitted within 2 to 3 days from the date of receiving this message.
+📌 Submission Instructions:
+Please submit:
+A GitHub repository link with your source code and a brief README file (explaining setup and key features)
+(Optional) A short screen recording demoing the extension
+Once submitted, kindly message me directly so we can schedule your interview based on the review of your work.

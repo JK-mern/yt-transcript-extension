@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import DefaultSettingsPopUp from "../DefaultPopUp/DefaultPopUp";
-import { Button } from "../ui/button";
 import PopupSettings from "../CurrentSettingsPopUp/CurrentSettingsEdit";
+import ChatComponent from "../ChatComponent/ChatComponent";
 
 function SidePanel() {
   const [prompt, setPrompt] = useState<string>("");
   const [platform, setPlatform] = useState<string>("");
   const [showDefaultPopUp, setDefaultPopUP] = useState<boolean>(false);
-  const [showEdit, setShowEdit] = useState<boolean>(false)
+  const [showEdit, setShowEdit] = useState<boolean>(false);
 
   useEffect(() => {
     async function getDefault() {
@@ -34,9 +34,9 @@ function SidePanel() {
   const handleSave = async () => {
     await chrome.storage.local.set({ prompt });
     await chrome.storage.local.set({ platform });
-    console.log()
+    console.log();
     setDefaultPopUP(false);
-    setShowEdit(false)
+    setShowEdit(false);
   };
 
   return (
@@ -47,16 +47,20 @@ function SidePanel() {
           setPlatform={setPlatform}
           setPropmt={setPrompt}
         />
-      ) :  showEdit ? (<div> <PopupSettings initialPlatform={platform} initialPrompt={prompt}  setPlatform={setPlatform} setPrompt={setPrompt} onSave={handleSave} /></div>)  : (
+      ) : showEdit ? (
+        <div>
+          {" "}
+          <PopupSettings
+            initialPlatform={platform}
+            initialPrompt={prompt}
+            setPlatform={setPlatform}
+            setPrompt={setPrompt}
+            onSave={handleSave}
+          />
+        </div>
+      ) : (
         <div className="bg-zinc-900 text-white h-screen w-screen p-4">
-          <div className="flex justify-between">
-           <h1 className="text-2xl font-semibold mb-2">🎬 YouTube Transcript</h1>
-           <Button onClick={ () => setShowEdit(true)}>Edit</Button>
-          </div>
-         
-          <p className="text-sm opacity-80 mb-4">
-            Your AI-powered summary will appear here.
-          </p>
+          <ChatComponent setEdit={setShowEdit} />
         </div>
       )}
     </div>

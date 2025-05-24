@@ -6,25 +6,7 @@ import { geminiApikey, prompt } from "./constant/constant";
 //   .catch((error) => console.error("Error setting panel behavior:", error));
 
 
-chrome.action.onClicked.addListener(async (tab) => {
-  const { prompt, platform } = await chrome.storage.local.get(["prompt", "platform"]);
-
-  if (prompt && platform) {
-    await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
-    await chrome.sidePanel.setOptions({
-      path: "src/sidepanel.html",
-      enabled: true,
-      tabId: tab.id,
-    });
-  } else {
-    chrome.windows.create({
-      url: chrome.runtime.getURL("index.html"),
-      type: "popup",
-      width: 400,
-      height: 600,
-    });
-  }
-});
+ chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
 
 
 //@ts-ignore

@@ -37,8 +37,8 @@ function PopupSettings({
  
 
   return (
-    <div className="rounded-lg">
-      <Card className="w-[300px] mx-4 my-4 border-blue-950 border-2">
+    <div  className="rounded-lg bg-zinc-900 flex justify-center items-center h-screen ">
+      <Card className="w-[300px] mx-4 my-4 h-72 bg-slate-50">
         <CardHeader>
           <CardTitle>Your Preferences</CardTitle>
           <CardDescription>Update your default settings.</CardDescription>
@@ -76,7 +76,7 @@ function PopupSettings({
           </form>
         </CardContent>
         <CardFooter className="flex justify-end">
-          <Button onClick={onSave}>Save Preferences</Button>
+          <Button onClick={onSave}>update Preferences</Button>
         </CardFooter>
       </Card>
     </div>
