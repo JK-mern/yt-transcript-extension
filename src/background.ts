@@ -1,9 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { geminiApikey, prompt } from "./constant/constant";
 
-// chrome.sidePanel
-//   .setPanelBehavior({ openPanelOnActionClick: true })
-//   .catch((error) => console.error("Error setting panel behavior:", error));
+
 
 
  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
@@ -51,6 +49,10 @@ async function handleTranscriptRequest(url: string) {
   console.log("background", summarizedData);
   return summarizedData;
 }
+
+
+
+
 
 async function getSummarizedData(transcript: string) {
   const ai = new GoogleGenAI({ apiKey: geminiApikey });

@@ -7,15 +7,15 @@
   "content_scripts": [
     {
       "js": ["src/content.tsx"],
-      "matches": ["https://www.youtube.com/watch*"]
-      
+      "matches": ["*://www.youtube.com/*"],
+      "run_at": "document_idle"
     }
   ],
   "background": {
-  "service_worker": "src/background.ts",
-  "type": "module"
-},
-"side_panel": {
+    "service_worker": "src/background.ts",
+    "type": "module"
+  },
+  "side_panel": {
     "default_path": "src/sidepanel.html"
   }
 }
