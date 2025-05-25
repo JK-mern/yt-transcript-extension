@@ -28,13 +28,11 @@ function SidePanel() {
     }
 
     getDefault();
-    console.log("Side panel activated");
   }, []);
 
   const handleSave = async () => {
     await chrome.storage.local.set({ prompt });
     await chrome.storage.local.set({ platform });
-    console.log();
     setDefaultPopUP(false);
     setShowEdit(false);
   };

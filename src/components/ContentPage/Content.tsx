@@ -38,24 +38,6 @@ function ContentPage() {
     if (!currentUrl.includes("/watch?v=")) return;
 
     insertShowTranscriptButton();
-
-    try {
-      const data = await chrome.runtime.sendMessage({
-        type: "getTranscript",
-        url: currentUrl,
-      });
-
-      if (data && typeof data === "string") {
-        setSummary(data);
-      } else {
-        throw new Error(data?.error || "Unknown error");
-      }
-    } catch (err: any) {
-      console.error("Failed to get summary:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
   }
 
   useEffect(() => {

@@ -9,6 +9,7 @@ import { geminiApikey, prompt } from "./constant/constant";
 
 //@ts-ignore
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  
   if (message.type === "getTranscript") {
     handleTranscriptRequest(message.url)
       .then((result) => sendResponse(result))

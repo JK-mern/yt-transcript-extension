@@ -1,15 +1,112 @@
-import ChatHeader from "./ChatHeader/ChatHeader"
-
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Separator } from "../ui/separator";
+import ChatHeader from "./ChatHeader/ChatHeader";
+import Loader from "../Loader/Loader";
+import ThreeDotLoader from "../Loader/ThreeDotLoader";
 
 interface chatComponentProps {
-    setEdit : (value : boolean) => void
-}
-function ChatComponent( {setEdit} : chatComponentProps) {
-  return (
-    <div>
-      <ChatHeader  setEdit={setEdit}/>
-    </div>
-  )
+  setEdit: (value: boolean) => void;
 }
 
-export default ChatComponent
+function ChatComponent({ setEdit }: chatComponentProps) {
+  const [defaultPrompt, setDefaultPrompt] = useState<string>("");
+  const [summary, setSummary] = useState<string>("");
+  const [_error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(summary).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  useEffect(() => {
+    async function getDefaultPrompt() {
+      const data = await chrome.storage.local.get(["prompt"]);
+      setDefaultPrompt(data.prompt);
+    }
+    getDefaultPrompt();
+  }, []);
+
+  async function handleGetSummary() {
+    setLoading(true);
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const currentUrl = tabs[0]?.url || "";
+
+    if (!currentUrl.includes("/watch?v=")) {
+      console.warn("Not a YouTube watch page");
+      return;
+    }
+
+    try {
+      const data = await chrome.runtime.sendMessage({
+        type: "getTranscript",
+        url: currentUrl,
+      });
+
+      if (data && typeof data === "string") {
+        setSummary(data);
+      } else {
+        throw new Error(data?.error || "Unknown error");
+      }
+    } catch (err: any) {
+      console.error("Failed to get summary:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="h-full flex flex-col">
+      <ChatHeader setEdit={setEdit} />
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="flex-1 overflow-auto p-4">
+          <div className="text-slate-100 text-sm flex flex-col gap-2">
+            <div className="whitespace-pre-wrap">{summary}</div>
+            {summary && (
+              <div className="flex justify-end">
+                <button
+                  onClick={handleCopy}
+                  className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-xs transition-colors duration-200"
+                  title="Copy summary"
+                >
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      <div className="  flex flex-col  gap-y-4 justify-end align-bottom mb-4">
+        <div>
+          <Separator className="border-2" />
+        </div>
+        <div className="flex gap-x-2 items-center ">
+          <Input
+            className="flex-1 rounded-md p-2 border-blue-500 text-sm"
+            placeholder="Enter your prompt here "
+            value={defaultPrompt}
+          />
+          <Button
+            disabled={loading}
+            onClick={handleGetSummary}
+            className="bg-green-600 text-white hover:bg-green-400 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? <ThreeDotLoader /> : "Send"}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ChatComponent;
