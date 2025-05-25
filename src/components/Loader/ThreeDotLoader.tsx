@@ -2,13 +2,12 @@ import { ThreeDots } from "react-loader-spinner";
 
 function ThreeDotLoader() {
   return (
-    <div>
+    <div className="flex justify-center items-center h-5 w-5">
       <ThreeDots
         visible={true}
-        height="80"
-        width="80"
-        color="#4fa94d"
-        radius="9"
+        height="24"
+        width="24"
+        color="#ffffff"
         ariaLabel="three-dots-loading"
         wrapperStyle={{}}
         wrapperClass=""
