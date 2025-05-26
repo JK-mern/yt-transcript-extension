@@ -71,6 +71,7 @@ async function handleTranscriptRequest(url: string) {
     throw new Error("Transcript not found in response.");
   }
 
+  
   const summarizedData = await getSummarizedData(data.transcript);
   return summarizedData;
 }
