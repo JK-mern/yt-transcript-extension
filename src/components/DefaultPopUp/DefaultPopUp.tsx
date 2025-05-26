@@ -30,10 +30,10 @@ function DefaultSettingsPopUp({
 }: DefaulPropUpProps) {
   return (
     <div className="rounded-lg bg-zinc-900 flex justify-center items-center h-screen ">
-      <Card className="w-[300px] mx-4 my-4 h-72 bg-slate-50">
+      <Card className="w-[300px] mx-4 my-4 h-72 bg-zinc-800 text-white border border-zinc-700">
         <CardHeader>
-          <CardTitle>Select Your Preferance</CardTitle>
-          <CardDescription>
+          <CardTitle>Select Your Preference</CardTitle>
+          <CardDescription className="text-zinc-400">
             Get youtube transcript in one click.
           </CardDescription>
         </CardHeader>
@@ -41,26 +41,31 @@ function DefaultSettingsPopUp({
           <form>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Default Prompt</Label>
+                <Label htmlFor="name" className="text-white">
+                  Default Prompt
+                </Label>
                 <Input
                   id="prompt"
                   placeholder="type your prompt"
+                  className="bg-zinc-700 text-white placeholder:text-zinc-400"
                   onChange={(e) => {
                     setPropmt(e.target.value);
                   }}
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="model">Choose Model</Label>
+                <Label htmlFor="model" className="text-white">
+                  Choose Model
+                </Label>
                 <Select
                   onValueChange={(value) => {
                     setPlatform(value);
                   }}
                 >
-                  <SelectTrigger id="model">
+                  <SelectTrigger id="model" className="bg-zinc-700 text-white">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
-                  <SelectContent position="popper">
+                  <SelectContent className="bg-zinc-700 text-white">
                     <SelectItem value="chatGpt">chat Gpt</SelectItem>
                     <SelectItem value="Gemini">Gemini</SelectItem>
                     <SelectItem value="Claude">Claude</SelectItem>
@@ -72,7 +77,12 @@ function DefaultSettingsPopUp({
           </form>
         </CardContent>
         <CardFooter className="flex justify-end">
-          <Button onClick={handleSave}>Save Preferance</Button>
+          <Button
+            className="bg-yellow-500 hover:bg-yellow-600 text-black"
+            onClick={handleSave}
+          >
+            Save Preference
+          </Button>
         </CardFooter>
       </Card>
     </div>
